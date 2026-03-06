@@ -52,7 +52,7 @@ Core business processes:
 
 **Result obtention  / export**
 - Shows the user a preview of the word document
-- The user can them download the dile directly to his device
+- The user can them download the file directly to his device
   
 **Logout**
 - The user is logged out from the app and redirected to the login page
