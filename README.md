@@ -11,7 +11,7 @@ The core approach relies on a multi-layered intelligent processing method. It pe
 
 The expected solution is the automatic mapping of extracted data into the official DUA template defined by the Ministry of Finance. The system validates basic consistency (such as totals, currencies, and dates), flags ambiguous fields, and generates a pre-filled Word document with visual confidence indicators (green, yellow, red). Rather than replacing customs experts, the system transforms their role into strategic validators, significantly reducing manual operational workload while maintaining regulatory accuracy.
 
-** 1.1 Technology stack **
+1.1 Technology stack
 
 Frontend technology, security technology, third-party libraries, frameworks, hosting; all with their respective versions
 
@@ -41,15 +41,19 @@ Core business processes:
 - The user inputs his login, password and the one time token
 - When trying to log in, if it fails, an error message shows up
 - If it succeds, the user is redirected to the home page
+  
 **Streamliner Setup**
 - The user selects a file from their device to use as the DUA template
 - The user selects a folder from their device which contains all the documents to feed the streamliner
 - The user then starts the streamliner, which makes appear the Progress tracking loading window
+  
 **Progress tracking**
 - Shows a percentage along with a progress bar that show the overall state of the process
+
 **Result obtention  / export**
 - Shows the user a preview of the word document
-- The user can them download the dile directly to his device 
+- The user can them download the dile directly to his device
+  
 **Logout**
 - The user is logged out from the app and redirected to the login page
 
