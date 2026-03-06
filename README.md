@@ -11,7 +11,7 @@ The core approach relies on a multi-layered intelligent processing method. It pe
 
 The expected solution is the automatic mapping of extracted data into the official DUA template defined by the Ministry of Finance. The system validates basic consistency (such as totals, currencies, and dates), flags ambiguous fields, and generates a pre-filled Word document with visual confidence indicators (green, yellow, red). Rather than replacing customs experts, the system transforms their role into strategic validators, significantly reducing manual operational workload while maintaining regulatory accuracy.
 
-## 1.1 Technology stack:
+** 1.1 Technology stack **
 
 Frontend technology, security technology, third-party libraries, frameworks, hosting; all with their respective versions
 
@@ -33,48 +33,48 @@ Frontend technology, security technology, third-party libraries, frameworks, hos
 -Enviroment deployments Azure DevOps environments
 -Observability by Azure Application Insights SDK
 
-## 1.2 UX UI analysis:
+**1.2 UX UI analysis**
 
 Core business processes:
 
-[Login]
+**Login**
 -The user inputs his login, password and the one time token
 -When trying to log in, if it fails, an error message shows up
 -If it succeds, the user is redirected to the home page
-[Streamliner Setup]
+**Streamliner Setup**
 -The user selects a file from their device to use as the DUA template
 -The user selects a folder from their device which contains all the documents to feed the streamliner
 -The user then starts the streamliner, which makes appear the Progress tracking loading window
-[Progress tracking]
+**Progress tracking**
 -Shows a percentage along with a progress bar that show the overall state of the process
-[Result obtention  / export]
+**Result obtention  / export**
 -Shows the user a preview of the word document
 -The user can them download the dile directly to his device 
-[Logout]
+**Logout**
 -The user is logged out from the app and redirected to the login page
 
-[Wireframes]
+**Wireframes**
 ![Wireframes Generados para cada screen](wireframes.jpg)
 
-UX test results
+**UX test results**
 
-## 1.3 Component design strategy:
+** 1.3 Component design strategy**
 
 Defines the technique and principles for frontend component design, how component reusability is achieved, how styles are centralized, and how branding, internationalization, and responsiveness are implemented.
 
-## 1.4 Security:
+**1.4 Security:**
 
 Technologies, techniques, and classes with their respective location in the project structure responsible for authentication and authorization of permissions and sessions.
 
-## 1.5 Layered design:
+**1.5 Layered design:**
 
 Design and explanation of the different layers of the application in the frontend.
 
-## 1.6 Design patterns:
+**1.6 Design patterns:**
 
 Design of classes with their respective location in the project structure, where it is necessary to apply object-oriented design patterns, such as: security, UI refresh, notification reception, state storage, API calls, asynchronous operations, session invalidation, event-driven programming, object creation.
 
-## 1.7
+**1.7**
 
 A folder in /src that contains the project scaffold, which is generated based on the full specification of points 1.1 through 1.6.
 
