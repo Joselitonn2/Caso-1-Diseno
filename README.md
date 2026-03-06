@@ -15,66 +15,66 @@ The expected solution is the automatic mapping of extracted data into the offici
 
 Frontend technology, security technology, third-party libraries, frameworks, hosting; all with their respective versions
 
--Application type: Web app
--Web framework: reactjs version 19.2
--Web server: NodeJs version 21
--Coding Languaje: Typescript 5.9.3
--Data validation framework: Zod 4.3.6
--Code prettier framework: Prettier 3.8.1
--Code style framework :eslint 10.0.2
--Unit testing: Jest 30.2.0
--Integration testing: Playwright version 1.58.2
--Cloud service: Azure cloud services
--Hosted by Azure app Service
--Code repository with Azure DevOps
--Automated code tasks by Husky 9.1.7
--CI CD: Azure pipelines
--Environments: development, stage and production
--Enviroment deployments Azure DevOps environments
--Observability by Azure Application Insights SDK
+- Application type: Web app
+- Web framework: reactjs version 19.2
+- Web server: NodeJs version 21
+- Coding Languaje: Typescript 5.9.3
+- Data validation framework: Zod 4.3.6
+- Code prettier framework: Prettier 3.8.1
+- Code style framework :eslint 10.0.2
+- Unit testing: Jest 30.2.0
+- Integration testing: Playwright version 1.58.2
+- Cloud service: Azure cloud services
+- Hosted by Azure app Service
+- Code repository with Azure DevOps
+- Automated code tasks by Husky 9.1.7
+- CI CD: Azure pipelines
+- Environments: development, stage and production
+- Enviroment deployments Azure DevOps environments
+- Observability by Azure Application Insights SDK
 
-**1.2 UX UI analysis**
+1.2 UX UI analysis
 
 Core business processes:
 
 **Login**
--The user inputs his login, password and the one time token
--When trying to log in, if it fails, an error message shows up
--If it succeds, the user is redirected to the home page
+- The user inputs his login, password and the one time token
+- When trying to log in, if it fails, an error message shows up
+- If it succeds, the user is redirected to the home page
 **Streamliner Setup**
--The user selects a file from their device to use as the DUA template
--The user selects a folder from their device which contains all the documents to feed the streamliner
--The user then starts the streamliner, which makes appear the Progress tracking loading window
+- The user selects a file from their device to use as the DUA template
+- The user selects a folder from their device which contains all the documents to feed the streamliner
+- The user then starts the streamliner, which makes appear the Progress tracking loading window
 **Progress tracking**
--Shows a percentage along with a progress bar that show the overall state of the process
+- Shows a percentage along with a progress bar that show the overall state of the process
 **Result obtention  / export**
--Shows the user a preview of the word document
--The user can them download the dile directly to his device 
+- Shows the user a preview of the word document
+- The user can them download the dile directly to his device 
 **Logout**
--The user is logged out from the app and redirected to the login page
+- The user is logged out from the app and redirected to the login page
 
-**Wireframes**
+Wireframes
 ![Wireframes Generados para cada screen](wireframes.jpg)
 
-**UX test results**
+UX test results
 
-** 1.3 Component design strategy**
+1.3 Component design strategy
 
 Defines the technique and principles for frontend component design, how component reusability is achieved, how styles are centralized, and how branding, internationalization, and responsiveness are implemented.
 
-**1.4 Security:**
+1.4 Security:
 
 Technologies, techniques, and classes with their respective location in the project structure responsible for authentication and authorization of permissions and sessions.
 
-**1.5 Layered design:**
+1.5 Layered design:
 
 Design and explanation of the different layers of the application in the frontend.
 
-**1.6 Design patterns:**
+1.6 Design patterns:
 
 Design of classes with their respective location in the project structure, where it is necessary to apply object-oriented design patterns, such as: security, UI refresh, notification reception, state storage, API calls, asynchronous operations, session invalidation, event-driven programming, object creation.
 
-**1.7**
+1.7
 
 A folder in /src that contains the project scaffold, which is generated based on the full specification of points 1.1 through 1.6.
 
