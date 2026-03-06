@@ -54,7 +54,7 @@ Core business processes:
 -The user is logged out from the app and redirected to the login page
 
 [Wireframes]
-![Wireframes Generados para cada screen](/imagenes/wireframes.jpg)
+![Wireframes Generados para cada screen](wireframes.jpg)
 
 UX test results
 
