@@ -64,7 +64,19 @@ UX test results
 
 1.3 Component design strategy
 
-Defines the technique and principles for frontend component design, how component reusability is achieved, how styles are centralized, and how branding, internationalization, and responsiveness are implemented.
+- Use atomic design for basic and complex component design
+- Centralize CSS styles in just one file per component type
+- Class names patterns for CSS: ComponentName-StyleName
+- Use only "em" positional units to support responsiveness in the design
+- Components supports react-i18next 16.5.8
+- There're not accesible requirements
+- Apply separation of concerns using container and presentational components
+- Establish a centralized design system with reusable design tokens
+- Implement domain-driven components tailored to DUA workflows
+- Standardize UI states (loading, error, empty, success) across components
+- Use lazy loading and code splitting for performance optimization
+- Introduce reusable validated form components integrated with Zod
+- Implement component-level error boundaries
 
 1.4 Security:
 
