@@ -173,11 +173,11 @@ graph TB
 
 1.7 Project scaffold
 
-- [components](./src/components/): Implements the UI following Atomic Design principles defined in [Component Design Strategy](#13-component-design-strategy)
+- [components/](./src/components/): Implements the UI following Atomic Design principles defined in [Component Design Strategy](#13-component-design-strategy)
  and UX flows from [UX Analys](#12-UX-UI-analysis)
-- hooks/: Acts as the connection layer between UI and business logic as described in [UX Analys](#12-UX-UI-analysis)
-- services/: Contains business logic and use cases aligned with patterns defined in [Design Pattern](#16-Design-patterns)
-- apiClients/: Handles communication with external services as defined in [Layered designs](#15-layered-design)
+- [hooks/](./src/hooks/): Acts as the connection layer between UI and business logic as described in [UX Analys](#12-UX-UI-analysis)
+- [services/](./src/services/): Contains business logic and use cases aligned with patterns defined in [Design Pattern](#16-Design-patterns)
+- [apiClients/](./src/apiClients/): Handles communication with external services as defined in [Layered designs](#15-layered-design)
  and configured in [Technology Stack](#11-Technology-stack)
 - models/: Defines shared data structures used across all layers as described in [Layered designs](#15-layered-design)
 - state/: Centralized state management aligned with shared layers in [Layered designs](#15-layered-design)
