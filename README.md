@@ -90,14 +90,14 @@ Technologies, techniques, and classes with their respective location in the proj
 - Authentication is handled by Azure Entra ID.
 - Roles: Manager, Customs Agent
 =======Permissions by Role=======
----Manager---
+**Manager**
 + Permission Code: MANAGE_USERS
 ++ Description: Manage users with crud operations
 + Permission Code: VIEW_REPORTS
 ++ Description: Access operational and performance reports.
 + Permission Code: VIEW_LOGA
 ++ Description: Access processes logs and reports.
----Customs Agent---
+**Customs Agent**
 + Permission Code: LOAD_FILE_FOLDER
 ++ Description: Set and upload a folder with data files.
 + Permission Code: LOAD_TEMPLATE
