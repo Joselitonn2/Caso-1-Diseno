@@ -11,7 +11,7 @@ The core approach relies on a multi-layered intelligent processing method. It pe
 
 The expected solution is the automatic mapping of extracted data into the official DUA template defined by the Ministry of Finance. The system validates basic consistency (such as totals, currencies, and dates), flags ambiguous fields, and generates a pre-filled Word document with visual confidence indicators (green, yellow, red). Rather than replacing customs experts, the system transforms their role into strategic validators, significantly reducing manual operational workload while maintaining regulatory accuracy.
 
-1.1 Technology stack
+## 1.1 Technology stack
 
 Frontend technology, security technology, third-party libraries, frameworks, hosting; all with their respective versions
 
@@ -33,7 +33,7 @@ Frontend technology, security technology, third-party libraries, frameworks, hos
 - Enviroment deployments Azure DevOps environments
 - Observability by Azure Application Insights SDK
 
-1.2 UX UI analysis
+## 1.2 UX UI analysis
 
 Core business processes:
 
@@ -60,9 +60,9 @@ Core business processes:
 Wireframes
 ![Wireframes Generados para cada screen](wireframes.jpg)
 
-UX test results
+## UX test results
 
-1.3 Component design strategy
+## 1.3 Component design strategy
 
 - Use atomic design for basic and complex component design
 - Centralize CSS styles in just one file per component type
@@ -78,7 +78,7 @@ UX test results
 - Introduce reusable validated form components integrated with Zod
 - Implement component-level error boundaries
 
-1.4 Security:
+## 1.4 Security:
 
 Technologies, techniques, and classes with their respective location in the project structure responsible for authentication and authorization of permissions and sessions.
 
@@ -109,7 +109,7 @@ Technologies, techniques, and classes with their respective location in the proj
 - Azure Key Vault is used to store Environment variables, API keys, Sensitive configuration data
 - Server Name: DuaFrontendServer
 
-1.5 Layered design:
+## 1.5 Layered design:
 - The frontend performs SSR (Server-Side Rendering).
 - If there is no authenticated session, the Authentication Layer is invoked.
 - If authentication is successful, the visual resource is accessed and rendered within the Components Layer.
@@ -129,14 +129,27 @@ Technologies, techniques, and classes with their respective location in the proj
 - Shared Layers: Models Zod Validation Redux State Management Exception Handling Logs → Azure Application Insights
 - CI/CD: Azure DevOps Repo → Pipelines → Dev / Stage / Prod → Azure App Service
 
-1.6 Design patterns:
+## 1.6 Design patterns:
 
 - Use *Builder Pattern* and *Strategy Pattern* to create the diffrent document processors such as wordx, xlsx, pdf, jpg, png.
 - NotificationService subscriptions works with *Observer pattern*
 - Use *Adapter pattern* to decide the output format to be writen in the documents, use FormatAdapters y Concret Format such as: Paragraph, Bullets, Table, Label, Amount.
 - *Singleton* for: ExceptionHandling, Document Parsers, Utils, StateManagement, The Api Clients, Settings classes.
 
-1.7
+1.7 Project scaffold
 
-A folder in /src that contains the project scaffold, which is generated based on the full specification of points 1.1 through 1.6.
+components/: Implements the UI following Atomic Design principles defined in [Component Design Strategy](#13-component-design-strategy)
+ and UX flows from UX/UI Analysis
+hooks/: Acts as the connection layer between UI and business logic as described in Layered Design
+services/: Contains business logic and use cases aligned with patterns defined in Design Patterns
+apiClients/: Handles communication with external services as defined in Layered Design
+ and configured in Technology Stack
+models/: Defines shared data structures used across all layers as described in Layered Design
+state/: Centralized state management aligned with shared layers in Layered Design
+notification/: Implements event-driven communication using Observer pattern as defined in Design Patterns
+exception/: Centralized error handling using Singleton pattern as defined in Design Patterns
+logs/: Handles system observability and integrates with Azure Application Insights as defined in Technology Stack
+settings/: Manages environment variables and secure configuration from Azure Key Vault as defined in Security
+utils/: Provides reusable helper functions shared across layers as described in Layered Design
+tests/: Contains unit and integration tests aligned with tools defined in Technology Stack
 
