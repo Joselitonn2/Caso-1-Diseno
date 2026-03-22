@@ -63,16 +63,16 @@ Wireframes
 ## UX test results
 
 Heatmaps
-![Heatmaps](hetamap1.jpg)
-![Heatmaps](hetamap2.jpg)
-![Heatmaps](hetamap3.jpg)
-![Heatmaps](hetamap4.jpg)
+![Heatmaps](hetamap1.jpeg)
+![Heatmaps](hetamap2.jpeg)
+![Heatmaps](hetamap3.jpeg)
+![Heatmaps](hetamap4.jpeg)
 
 Capturas de los testers
 
-![TesterC](Tester_C.jpg)
-![TesterM](Tester_M.jpg)
-![TesterS](Tester_S.jpg)
+![TesterC](Tester_C.jpeg)
+![TesterM](Tester_M.jpeg)
+![TesterS](Tester_S.jpeg)
 
 ## 1.3 Component design strategy
 
