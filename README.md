@@ -128,10 +128,99 @@ Technologies, techniques, and classes with their respective location in the proj
 - ApiClients → External APIs External APIs → Notification Service (Callbacks)
 - Shared Layers: Models Zod Validation Redux State Management Exception Handling Logs → Azure Application Insights
 - CI/CD: Azure DevOps Repo → Pipelines → Dev / Stage / Prod → Azure App Service
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│                              FRONTEND - SSR (Server-Side Rendering)                          │
+│                                                                                             │
+│   ┌─────────────┐      ┌─────────────────────┐      ┌─────────────────────────────────┐    │
+│   │ User Request│─────▶│ Authenticated Session?│─────▶│    Authentication Layer       │    │
+│   └─────────────┘      └──────────┬──────────┘      └───────────────┬─────────────────┘    │
+│                                   │                                  │                      │
+│                                   │ Yes                              │ Success              │
+│                                   ▼                                  ▼                      │
+│                          ┌─────────────────────────────────────────────────┐                │
+│                          │           Visual Resource Access               │                │
+│                          └─────────────────────────────────────────────────┘                │
+└───────────────────────────────────────────┬─────────────────────────────────────────────────┘
+                                            │
+                                            ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│                           COMPONENTS LAYER (Atomic Design)                                  │
+│                                                                                             │
+│   ┌─────────┐    ┌───────────┐    ┌───────────┐    ┌─────────┐    ┌───────┐              │
+│   │  Pages  │───▶│ Templates │───▶│ Organisms │───▶│Molecules│───▶│ Atoms │              │
+│   └─────────┘    └───────────┘    └───────────┘    └─────────┘    └───────┘              │
+│         │                                                                                  │
+│         ▼                                                                                  │
+│   ┌─────────────────────────────────────────────────────────────────────────────────┐      │
+│   │                           Hooks Layer                                          │      │
+│   │         (Connects visual components with Services Layer)                       │      │
+│   └─────────────────────────────────────────────────────────────────────────────────┘      │
+└───────────────────────────────────────────┬─────────────────────────────────────────────────┘
+                                            │
+                                            ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│                              SERVICES LAYER                                                │
+│                                                                                             │
+│   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
+│   │                    Business Logic Services                                         │   │
+│   │                              │                                                    │   │
+│   │         ┌────────────────────┼────────────────────┐                               │   │
+│   │         ▼                    ▼                    ▼                               │   │
+│   │   ┌──────────┐       ┌────────────┐       ┌────────────┐                          │   │
+│   │   │   Utils  │       │ ApiClients │       │  Settings  │                          │   │
+│   │   └──────────┘       └─────┬──────┘       └──────┬─────┘                          │   │
+│   └─────────────────────────────┼─────────────────────┼────────────────────────────────┘   │
+│                                 │                     │                                    │
+└─────────────────────────────────┼─────────────────────┼────────────────────────────────────┘
+                                  │                     │
+                                  ▼                     ▼
+                    ┌─────────────────────┐   ┌─────────────────────────────────┐
+                    │    External APIs    │   │   Azure Key Vault               │
+                    │                     │   │   (Environment Variables)       │
+                    └──────────┬──────────┘   └─────────────────────────────────┘
+                               │
+                               │ (Async calls via Notification Service)
+                               ▼
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│                         NOTIFICATION SERVICE LAYER                                          │
+│                                                                                             │
+│   ┌───────────────────────────────────────────────────────────────────────────────────┐     │
+│   │  Event Subscription & Callback URLs                                              │     │
+│   │                                                                                  │     │
+│   │  ┌─────────────────┐         ┌─────────────────┐                                │     │
+│   │  │ Async API Call  │────────▶│ Callback URL    │                                │     │
+│   │  │ (from Services) │         │ (to External)   │                                │     │
+│   │  └─────────────────┘         └────────┬────────┘                                │     │
+│   │                                       │                                         │     │
+│   │                                       │ Response                                │     │
+│   │                                       ▼                                         │     │
+│   │                             ┌─────────────────┐                                │     │
+│   │                             │ Notify Service  │                                │     │
+│   │                             │ (via callback)  │                                │     │
+│   │                             └─────────────────┘                                │     │
+│   └───────────────────────────────────────────────────────────────────────────────────┘     │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│                              CI/CD PIPELINE                                                 │
+│                                                                                             │
+│   ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────────────────────┐     │
+│   │  Azure DevOps   │─────▶│    Pipelines    │─────▶│ Dev → Stage → Prod             │     │
+│   │      Repo       │      │                 │      │                                 │     │
+│   └─────────────────┘      └─────────────────┘      └───────────────┬─────────────────┘     │
+│                                                                     │                       │
+│                                                                     ▼                       │
+│                                                          ┌─────────────────────┐            │
+│                                                          │  Azure App Service  │            │
+│                                                          └─────────────────────┘            │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
 
 1.6 Design patterns:
 
-Design of classes with their respective location in the project structure, where it is necessary to apply object-oriented design patterns, such as: security, UI refresh, notification reception, state storage, API calls, asynchronous operations, session invalidation, event-driven programming, object creation.
+- Use *Builder Pattern* and *Strategy Pattern* to create the diffrent document processors such as wordx, xlsx, pdf, jpg, png.
+- NotificationService subscriptions works with *Observer pattern*
+- Use *Adapter pattern* to decide the output format to be writen in the documents, use FormatAdapters y Concret Format such as: Paragraph, Bullets, Table, Label, Amount.
+- *Singleton* for: ExceptionHandling, Document Parsers, Utils, StateManagement, The Api Clients, Settings classes.
 
 1.7
 
