@@ -173,7 +173,7 @@ graph TB
 
 1.7 Project scaffold
 
-- components/: Implements the UI following Atomic Design principles defined in [Component Design Strategy](#13-component-design-strategy)
+- `components/`: Implements the UI following Atomic Design principles defined in [Component Design Strategy](#13-component-design-strategy)
  and UX flows from [UX Analys](#12-UX-UI-analysis)
 - hooks/: Acts as the connection layer between UI and business logic as described in [UX Analys](#12-UX-UI-analysis)
 - services/: Contains business logic and use cases aligned with patterns defined in [Design Pattern](#16-Design-patterns)
