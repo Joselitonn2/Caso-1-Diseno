@@ -82,8 +82,6 @@ UX test results
 
 Technologies, techniques, and classes with their respective location in the project structure responsible for authentication and authorization of permissions and sessions.
 
-1.5 Layered design:
-
 - Multi-Factor Authentication (MFA) through Azure Entra ID.
 - Mobile authenticator application only.
 - Single Sign on Azure Entra ID
@@ -110,6 +108,8 @@ Technologies, techniques, and classes with their respective location in the proj
       + Description: Downloads the generated DUA
 - Azure Key Vault is used to store Environment variables, API keys, Sensitive configuration data
 - Server Name: DuaFrontendServer
+
+1.5 Layered design:
 
 1.6 Design patterns:
 
