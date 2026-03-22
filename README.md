@@ -63,6 +63,7 @@ Wireframes
 ## UX test results
 
 Heatmaps
+
 ![Heatmaps](heatmap1.jpeg)
 ![Heatmaps](heatmap2.jpeg)
 ![Heatmaps](heatmap3.jpeg)
