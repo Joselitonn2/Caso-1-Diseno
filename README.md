@@ -63,10 +63,10 @@ Wireframes
 ## UX test results
 
 Heatmaps
-![Heatmaps](hetamap1.jpeg)
-![Heatmaps](hetamap2.jpeg)
-![Heatmaps](hetamap3.jpeg)
-![Heatmaps](hetamap4.jpeg)
+![Heatmaps](heatmap1.jpeg)
+![Heatmaps](heatmap2.jpeg)
+![Heatmaps](heatmap3.jpeg)
+![Heatmaps](heatmap4.jpeg)
 
 Capturas de los testers
 
