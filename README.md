@@ -110,6 +110,24 @@ Technologies, techniques, and classes with their respective location in the proj
 - Server Name: DuaFrontendServer
 
 1.5 Layered design:
+- The frontend performs SSR (Server-Side Rendering).
+- If there is no authenticated session, the Authentication Layer is invoked.
+- If authentication is successful, the visual resource is accessed and rendered within the Components Layer.
+- Components follow Atomic Design (atoms, molecules, organisms, templates, and pages); within components, a Hooks Layer exists to connect visual component actions with the Services Layer.
+- Services contain the application's operations. Business logic classes
+- To perform their tasks, Services may require access to the Utils, ApiClients, and Settings layers.
+- ApiClients contains all classes that access external APIs.
+- Settings accesses environment variables in Azure Key Vault during rendering.
+- ApiClients reads API keys and URLs from Settings.
+- All ApiClient calls and returns use classes in Models, which are validated by the DataValidation layer.
+- All layers can access the Models, Utils, and State Management layers.
+- The NotificationService layer allows other layers to subscribe to events via callback URLs.
+- Asynchronous API calls are always handled via callback using the Notification Service layer.
+- The Logs layer provides classes to register system events, which are sent via ApiClients.
+- ExceptionHandling layer is a shared layer
+- ApiClients → External APIs External APIs → Notification Service (Callbacks)
+- Shared Layers: Models Zod Validation Redux State Management Exception Handling Logs → Azure Application Insights
+- CI/CD: Azure DevOps Repo → Pipelines → Dev / Stage / Prod → Azure App Service
 
 1.6 Design patterns:
 
