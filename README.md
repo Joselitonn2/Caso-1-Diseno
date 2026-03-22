@@ -62,6 +62,18 @@ Wireframes
 
 ## UX test results
 
+Heatmaps
+![Heatmaps](hetamap1.jpg)
+![Heatmaps](hetamap2.jpg)
+![Heatmaps](hetamap3.jpg)
+![Heatmaps](hetamap4.jpg)
+
+Capturas de los testers
+
+![TesterC](Tester_C.jpg)
+![TesterM](Tester_M.jpg)
+![TesterS](Tester_S.jpg)
+
 ## 1.3 Component design strategy
 
 - Use atomic design for basic and complex component design
