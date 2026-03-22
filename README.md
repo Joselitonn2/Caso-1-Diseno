@@ -94,20 +94,20 @@ Technologies, techniques, and classes with their respective location in the proj
     - Permission Code: MANAGE_USERS
       - Description: Manage users with crud operations
   - Permission Code: VIEW_REPORTS
-    ++ Description: Access operational and performance reports.
+    + Description: Access operational and performance reports.
   + Permission Code: VIEW_LOGA
-    ++ Description: Access processes logs and reports.
+    + Description: Access processes logs and reports.
   - **Customs Agent**
     + Permission Code: LOAD_FILE_FOLDER
-      ++ Description: Set and upload a folder with data files.
+      + Description: Set and upload a folder with data files.
     + Permission Code: LOAD_TEMPLATE
-      ++ Description: Set and upload a file for the DUA template
+      + Description: Set and upload a file for the DUA template
     + Permission Code: GENERATE_DUA
-      ++ Description: Starts the AI process of generating a DUA
+      + Description: Starts the AI process of generating a DUA
     + Permission Code: PREVIEW_DUA
-      ++ Description: showa a previe of the generated DUA 
+      + Description: showa a previe of the generated DUA 
     + Permission Code: DOWNLOAD_DUA
-      ++ Description: Downloads the generated DUA
+      + Description: Downloads the generated DUA
 - Azure Key Vault is used to store Environment variables, API keys, Sensitive configuration data
 - Server Name: DuaFrontendServer
 
