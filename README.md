@@ -139,10 +139,10 @@ Technologies, techniques, and classes with their respective location in the proj
 1.7 Project scaffold
 
 components/: Implements the UI following Atomic Design principles defined in [Component Design Strategy](#13-component-design-strategy)
- and UX flows from UX/UI Analysis
-hooks/: Acts as the connection layer between UI and business logic as described in Layered Design
-services/: Contains business logic and use cases aligned with patterns defined in Design Patterns
-apiClients/: Handles communication with external services as defined in Layered Design
+ and UX flows from [UX Analys](#12-UX-UI-analysis)
+hooks/: Acts as the connection layer between UI and business logic as described in [UX Analys](#13-UX-UI-analysis)
+services/: Contains business logic and use cases aligned with patterns defined in [Design Pattern](#16-Design-patterns)
+apiClients/: Handles communication with external services as defined in [Layered desigs](#15-layered-design)
  and configured in Technology Stack
 models/: Defines shared data structures used across all layers as described in Layered Design
 state/: Centralized state management aligned with shared layers in Layered Design
