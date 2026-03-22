@@ -128,6 +128,41 @@ Technologies, techniques, and classes with their respective location in the proj
 - ApiClients → External APIs External APIs → Notification Service (Callbacks)
 - Shared Layers: Models Zod Validation Redux State Management Exception Handling Logs → Azure Application Insights
 - CI/CD: Azure DevOps Repo → Pipelines → Dev / Stage / Prod → Azure App Service
+```mermaid
+graph TB
+    subgraph Cliente
+        Browser[" User Browser<br/>React SSR Client"]
+    end
+
+    subgraph "Azure Cloud"
+        subgraph AppService["Azure App Service"]
+            Node["Node.js + React SSR"]
+            
+            subgraph AppLayers["Application Layers"]
+                SSR["SSR Request Handling<br/>Authentication"]
+                Components["Components Layer<br/>Atomic Design UI<br/>Atoms → Molecules → Organisms → Pages"]
+                Hooks["Hooks<br/>useState, useEffect, Custom Hooks"]
+                Services["Services Layer<br/>Business Logic & API Orchestration"]
+            end
+            
+            Utils["Utils"]
+            ApiClients["API Clients"]
+            Settings["Settings"]
+        end
+        
+        KeyVault[" Azure Key Vault<br/>Secrets / Configuration"]
+    end
+
+    Browser -->|HTTPS| Node
+    SSR --> Components
+    Components --> Hooks
+    Hooks --> Services
+    Services --> ApiClients
+    Services --> Utils
+    Services --> Settings
+    Settings -.->|References| KeyVault
+    ApiClients -.->|Credentials| KeyVault
+```
 
 ## 1.6 Design patterns:
 
