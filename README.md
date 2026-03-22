@@ -138,18 +138,18 @@ Technologies, techniques, and classes with their respective location in the proj
 
 1.7 Project scaffold
 
-components/: Implements the UI following Atomic Design principles defined in [Component Design Strategy](#13-component-design-strategy)
+- components/: Implements the UI following Atomic Design principles defined in [Component Design Strategy](#13-component-design-strategy)
  and UX flows from [UX Analys](#12-UX-UI-analysis)
-hooks/: Acts as the connection layer between UI and business logic as described in [UX Analys](#13-UX-UI-analysis)
-services/: Contains business logic and use cases aligned with patterns defined in [Design Pattern](#16-Design-patterns)
-apiClients/: Handles communication with external services as defined in [Layered desigs](#15-layered-design)
- and configured in Technology Stack
-models/: Defines shared data structures used across all layers as described in Layered Design
-state/: Centralized state management aligned with shared layers in Layered Design
-notification/: Implements event-driven communication using Observer pattern as defined in Design Patterns
-exception/: Centralized error handling using Singleton pattern as defined in Design Patterns
-logs/: Handles system observability and integrates with Azure Application Insights as defined in Technology Stack
-settings/: Manages environment variables and secure configuration from Azure Key Vault as defined in Security
-utils/: Provides reusable helper functions shared across layers as described in Layered Design
-tests/: Contains unit and integration tests aligned with tools defined in Technology Stack
+- hooks/: Acts as the connection layer between UI and business logic as described in [UX Analys](#12-UX-UI-analysis)
+- services/: Contains business logic and use cases aligned with patterns defined in [Design Pattern](#16-Design-patterns)
+- apiClients/: Handles communication with external services as defined in [Layered designs](#15-layered-design)
+ and configured in [Technology Stack](#11-Technology-stack)
+- models/: Defines shared data structures used across all layers as described in [Layered designs](#15-layered-design)
+- state/: Centralized state management aligned with shared layers in [Layered designs](#15-layered-design)
+- notification/: Implements event-driven communication using Observer pattern as defined in [Design Pattern](#16-Design-patterns)
+- exception/: Centralized error handling using Singleton pattern as defined in [Design Pattern](#16-Design-patterns)
+- logs/: Handles system observability and integrates with Azure Application Insights as defined in [Technology Stack](#11-Technology-stack)
+- settings/: Manages environment variables and secure configuration from Azure Key Vault as defined in [Security](#14-Security)
+- utils/: Provides reusable helper functions shared across layers as described in [Layered designs](#15-layered-design)
+- tests/: Contains unit and integration tests aligned with tools defined in [Technology Stack](#11-Technology-stack)
 
