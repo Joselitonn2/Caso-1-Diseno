@@ -89,7 +89,7 @@ Technologies, techniques, and classes with their respective location in the proj
 - Single Sign on Azure Entra ID
 - Authentication is handled by Azure Entra ID.
 - Roles: Manager, Customs Agent
-=======Permissions by Role=======
+**Permissions by Role**
 **Manager**
 + Permission Code: MANAGE_USERS
 ++ Description: Manage users with crud operations
@@ -108,7 +108,6 @@ Technologies, techniques, and classes with their respective location in the proj
 ++ Description: showa a previe of the generated DUA 
 + Permission Code: DOWNLOAD_DUA
 ++ Description: Downloads the generated DUA
-===================================
 - Azure Key Vault is used to store Environment variables, API keys, Sensitive configuration data
 - Server Name: DuaFrontendServer
 
