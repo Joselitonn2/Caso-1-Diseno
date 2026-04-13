@@ -378,6 +378,127 @@ graph TB
 5. The file is returned as a downloadable HTTPS response.
 6. Download event is logged.
 
+## Architecture diagrams in layers
+
+### C4 Model – System Context Diagram (Level 1)
+```mermaid
+graph TD
+    User["<b>Customs User</b><br>Person or agent who<br>manages the DUA"]
+
+    DUA["<b>DUA Streamliner</b><br>System that receives files,<br>pre-fills the DUA and delivers<br>the official template with valid data"]
+
+    ExternalSystem["<b>Official Customs System</b><br>Official external system for<br>DUA validation and registration"]
+
+    User -->|"Sends files (PDF, Excel, Word)<br>and official DUA with valid data"| DUA
+    DUA -->|"Returns pre-filled DUA"| User
+    DUA -->|"Validates data and registers DUA<br>(API / Web Services)"| ExternalSystem
+    ExternalSystem -->|"Returns official validation"| DUA
+```
+
+### C4 Model – Container Diagram (Level 2)
+```mermaid
+flowchart LR
+    U[Customs Agent / Manager]
+    FE[Frontend Web Application\nReact / SPA]
+    APIM[Azure API Management\nREST API Gateway]
+    BE[Backend API\nASP.NET Core\nAzure App Service]
+    AI[AI Processing Services\nOCR + Semantic Engine]
+    BLOB[Azure Blob Storage]
+    DB[(Azure SQL Database)]
+    KV[Azure Key Vault]
+    NH[Azure Notification Hubs]
+    MON[Azure Monitor + App Insights]
+    ENTRA[Azure Entra ID]
+
+    U --> FE
+    FE --> APIM
+    APIM --> BE
+
+    FE --> ENTRA
+    BE --> ENTRA
+
+    BE --> BLOB
+    BE --> DB
+    BE --> KV
+    BE --> NH
+    BE --> MON
+
+    BE --> AI
+    AI --> BLOB
+    AI --> DB
+
+```
+### C4 Model – Code Diagram (Level 4)
+
+```mermaid
+classDiagram
+
+    class DuaController {
+        +UploadFiles()
+        +UploadTemplate()
+        +GenerateDua()
+        +PreviewDua()
+        +DownloadDua()
+    }
+
+    class DuaService {
+        +ProcessUpload()
+        +GenerateDocument()
+        +ValidateData()
+        +ArchiveData()
+    }
+
+    class AIProcessingService {
+        +ExtractText()
+        +RunOCR()
+        +SemanticMapping()
+        +CalculateConfidence()
+    }
+
+    class ValidationService {
+        +ValidateRequiredFields()
+        +CheckConsistency()
+        +DetectDuplicates()
+    }
+
+    class NotificationService {
+        +NotifySuccess()
+        +NotifyFailure()
+        +NotifyReview()
+    }
+
+    class StorageRepository {
+        +UploadFile()
+        +DownloadFile()
+        +ArchiveFile()
+    }
+
+    class DuaRepository {
+        +SaveMetadata()
+        +UpdateStatus()
+        +GetDuaById()
+    }
+
+    class TemplateRepository {
+        +SaveTemplate()
+        +GetActiveTemplate()
+    }
+
+    class AuditLogRepository {
+        +RegisterEvent()
+        +GetLogs()
+    }
+
+    DuaController --> DuaService
+    DuaService --> AIProcessingService
+    DuaService --> ValidationService
+    DuaService --> NotificationService
+    DuaService --> StorageRepository
+    DuaService --> DuaRepository
+    DuaService --> TemplateRepository
+    DuaService --> AuditLogRepository
+```
+
 ## Design Considerations
 ### <<<1. System Configurations, Parameters, and Policies>>>
 **Configuration Management**
