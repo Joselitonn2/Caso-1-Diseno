@@ -202,179 +202,178 @@ graph TB
 - [utils/](./src/utils/): Provides reusable helper functions shared across layers as described in [Layered designs](#15-layered-design)
 - [tests/](./src/tests/): Contains unit and integration tests aligned with tools defined in [Technology Stack](#11-Technology-stack)
 
-BACKEND DESIGN
+## BACKEND DESIGN
 
 ## Technology stack
-+REST API, HTTPS
-+Azure API Management + Azure App Service
-+API standard with Open API
-+For asyncronous operations and notifications use Azure Notification Hubs
-+No load balance required
-+API coding language .NET, ASP.NET Core
-+This is a monorepo solution, sharing the repository with the frontend, backend folder: duabusiness
-+services
-+Azure SQL Database
+- REST API, HTTPS
+- Azure API Management + Azure App Service
+- API standard with Open API
+- For asyncronous operations and notifications use Azure Notification Hubs
+- No load balance required
+- API coding language .NET, ASP.NET Core
+- This is a monorepo solution, sharing the repository with the frontend, backend folder: duabusiness
+- services
+- Azure SQL Database
 
 ## Security
-+Same as frontend:
-++Multi-Factor Authentication (MFA) through Azure Entra ID.
-++Mobile authenticator application only.
-++Single Sign on Azure Entra ID
-++Authentication is handled by Azure Entra ID.
-++Roles: Manager, Customs Agent
-++Permissions by Role
-===Manager===
--Permission Code: MANAGE_USERS
---Description: Manage users with crud operations
--Permission Code: VIEW_REPORTS
---Description: Access operational and performance reports.
--Permission Code: VIEW_LOGA
---Description: Access processes logs and reports.
-===Customs Agent===
--Permission Code: LOAD_FILE_FOLDER
---Description: Set and upload a folder with data files.
--Permission Code: LOAD_TEMPLATE
---Description: Set and upload a file for the DUA template
--Permission Code: GENERATE_DUA
---Description: Starts the AI process of generating a DUA
--Permission Code: PREVIEW_DUA
---Description: showa a previe of the generated DUA
--Permission Code: DOWNLOAD_DUA
---Description: Downloads the generated DUA
-++Azure Key Vault is used to store Environment variables, API keys, Sensitive configuration data
-++Server Name: DuaBackendServer
+(Same as frontend:)
+- Multi-Factor Authentication (MFA) through Azure Entra ID.
+- Mobile authenticator application only.
+- Single Sign on Azure Entra ID
+- Authentication is handled by Azure Entra ID.
+- Roles: Manager, Customs Agent
+- **Permissions by Role**
+  - **Manager**
+    - Permission Code: MANAGE_USERS
+      - Description: Manage users with crud operations
+  - Permission Code: VIEW_REPORTS
+    + Description: Access operational and performance reports.
+  + Permission Code: VIEW_LOGA
+    + Description: Access processes logs and reports.
+  - **Customs Agent**
+    + Permission Code: LOAD_FILE_FOLDER
+      + Description: Set and upload a folder with data files.
+    + Permission Code: LOAD_TEMPLATE
+      + Description: Set and upload a file for the DUA template
+    + Permission Code: GENERATE_DUA
+      + Description: Starts the AI process of generating a DUA
+    + Permission Code: PREVIEW_DUA
+      + Description: showa a previe of the generated DUA 
+    + Permission Code: DOWNLOAD_DUA
+      + Description: Downloads the generated DUA
+- Azure Key Vault is used to store Environment variables, API keys, Sensitive configuration data
+- Server Name: DuaBackendServer
 
-+HTTPS 
-+AES-256 for db Encryption
-+request payload limited to 2 MiB.
-+60 requests/min per user
-+20 simultaneous connections max
-+Archive data after 180 days
+- HTTPS 
+- AES-256 for db Encryption
+- request payload limited to 2 MiB.
+- 60 requests/min per user
+- 20 simultaneous connections max
+- Archive data after 180 days
 
 ## Observability
-+Same as frontend
-+Events to register:
--Login and Logouts
--file folder loading
--DUA template loading
--Dua Generations
--Dua downloads
-+Azure Monitor + Application Insights for tracking and dashboard generation
-+Azure Pipelines to automate workflows
-+Deployment dev, stage and prod with Azure Pipelines
+- Events to register:
+  - Login and Logouts
+  - file folder loading
+  - DUA template loading
+  - Dua Generations
+  - Dua downloads
+-Azure Monitor + Application Insights for tracking and dashboard generation
+-Azure Pipelines to automate workflows
+-Deployment dev, stage and prod with Azure Pipelines
 
 ## Availability
-+8.76 hours anual downtime max
-+99.9% uptime (3 nines)
-+SPOF:
---Azure App Service: 99.95% uptime
---Azure API Management (APIM) 99.9% uptime
---Azure Notification Hubs ≥99.9% uptime
+-8.76 hours anual downtime max
+-99.9% uptime (3 nines)
+-SPOF:
+ -Azure App Service: 99.95% uptime
+ -Azure API Management (APIM) 99.9% uptime
+ -Azure Notification Hubs ≥99.9% uptime
 
 ## Scalability
-+Elements that scale alongside RPM:
--Azure API Management: scale units, CPU
--Azure App Service: CPU, TAM, threads, sockets, instances
--Logs: request logs, traces, exceptions, metrics
--DB
+-Elements that scale alongside RPM:
+ -Azure API Management: scale units, CPU
+ -Azure App Service: CPU, TAM, threads, sockets, instances
+ -Logs: request logs, traces, exceptions, metrics
+ -DB
 
 ## Backend key workflows
-===1. Upload Files to Generate DUA===
+**1. Upload Files to Generate DUA**
 1.The backend receives the request from the authenticated Customs Agent containing the list of files to be uploaded.
 2.The API validates:
---User authentication through Azure Entra ID
---User permission: LOAD_FILE_FOLDER
---Request size limit (max 2 MiB per request)
---Allowed file types (.pdf, .docx, .xlsx, .jpg, .png, .tiff, .txt)
+ -User authentication through Azure Entra ID
+ -User permission: LOAD_FILE_FOLDER
+ -Request size limit (max 2 MiB per request)
+ -Allowed file types (.pdf, .docx, .xlsx, .jpg, .png, .tiff, .txt)
 3.The backend opens a streaming upload session to process files one by one without loading all content into memory.
 4.Each file is transferred in raw binary stream format through HTTPS.
 5.The backend performs basic file validation:
---file integrity
---malware scan hook
---duplicate detection
---unsupported format validation
+ -file integrity
+ -malware scan hook
+ -duplicate detection
+ -unsupported format validation
 6.Each valid file is stored in Azure Blob Storage inside a container associated with the current DUA generation request.
 7.Metadata is stored in the database:
---file name
---file type
---upload timestamp
---storage URI
---uploaded by user
---process status
---correlation ID
+ -file name
+ -file type
+ -upload timestamp
+ -storage URI
+ -uploaded by user
+ -process status
+ -correlation ID
 8.An event log is registered in Application Insights:
---upload started
---upload completed
---upload failed
+ -upload started
+ -upload completed
+ -upload failed
 9.The backend returns a Folder Upload Session ID that will be used in the DUA generation workflow.
 
-===2. Setup DUA Template===
+**2. Setup DUA Template**
 1.The backend receives the DUA template file upload request.
 2.The API validates:
---authenticated user
---permission: LOAD_TEMPLATE
---valid Word template format (.docx)
+ -authenticated user
+ -permission: LOAD_TEMPLATE
+ -valid Word template format (.docx)
 3.The template file is uploaded using streaming transfer.
 4.The file is stored in Azure Blob Storage under a dedicated template container.
 5.The backend extracts the Word placeholders / merge fields from the template.
 6. The API returns Template Session ID
 
-===3. Generate DUA Document===
+**3. Generate DUA Document**
 1.The backend receives the generation request with:
---Folder Upload Session ID
---Template Session ID
+ -Folder Upload Session ID
+ -Template Session ID
 2.The API validates:
---authenticated user
---permission: GENERATE_DUA
+ -authenticated user
+ -permission: GENERATE_DUA
 3.A DUA Generation Job is created in the database with status PENDING.
 4.The backend sends an asynchronous processing event to the AI processing service.
 5.The AI pipeline starts processing:
---reads all uploaded files from Blob Storage
---extracts structured text from Excel / Word
---extracts text from PDFs
---applies OCR for scanned images and invoices
---normalizes extracted content
+ -reads all uploaded files from Blob Storage
+ -extracts structured text from Excel / Word
+ -extracts text from PDFs
+ -applies OCR for scanned images and invoices
+ -normalizes extracted content
 6.The AI semantic engine interprets customs-related fields
 7.Extracted data is mapped into the official DUA field model.
 8.Validation rules are executed:
---required fields
---data format validation
---cross-field consistency
---duplicate invoice detection
---missing values
---confidence threshold rules
+ -required fields
+ -data format validation
+ -cross-field consistency
+ -duplicate invoice detection
+ -missing values
+ -confidence threshold rules
 9.Low-confidence fields are marked with review flags.
 10. The Word DUA document is automatically pre-filled using the template.
 11.The generated document is stored in Blob Storage.
 12.The job status is updated to:
---COMPLETED
---FAILED
---REVIEW_REQUIRED
+ -COMPLETED
+ -FAILED
+ -REVIEW_REQUIRED
 13.A notification is sent through Azure Notification Hubs.
 14.The event is logged in observability tools.
 
-===4. Preview Generated DUA===
+**4. Preview Generated DUA**
 1.The backend receives the preview request.
 2.The API validates:
---authenticated user
---permission: PREVIEW_DUA
+ -authenticated user
+ -permission: PREVIEW_DUA
 3.The backend retrieves the generated DUA file from Blob Storage.
 4.The Word file is converted into preview format:
---PDF
---HTML rendering
---document snapshot
+ -PDF
+ -HTML rendering
+ -document snapshot
 5.Confidence indicators are injected visually:
---green = high confidence
---yellow = medium confidence
---red = requires manual review
+ -green = high confidence
+ -yellow = medium confidence
+ -red = requires manual review
 6.The preview file is returned to the frontend.
 7.Preview access is logged.
 
-===5. Download Final DUA===
+**5. Download Final DUA**
 1.The backend receives the download request.
 2.The API validates:
---authenticated user
---permission: DOWNLOAD_DUA
+ -authenticated user
+ -permission: DOWNLOAD_DUA
 3.The backend retrieves the final approved document from Blob Storage.
 4. A secure temporary download URL is generated.
 5.The file is returned as a downloadable HTTPS response.
@@ -382,200 +381,200 @@ BACKEND DESIGN
 
 
 ## Design Considerations
-<<<1. System Configurations, Parameters, and Policies>>>
-===Configuration Management===
+# <<<1. System Configurations, Parameters, and Policies>>>
+**Configuration Management**
 Configuration values must be managed using:
--environment-specific configuration files
--Azure App Service Application Settings
--Azure Key Vault for sensitive values
+- environment-specific configuration files
+- Azure App Service Application Settings
+- Azure Key Vault for sensitive values
 
-===Environment Profiles===
+**Environment Profiles**
 Separate configurations must be maintained for:
--development
--staging
--production
+- development
+- staging
+- production
 
-===Policy Definitions===
+**Policy Definitions**
 Operational policies must be explicitly defined in code and infrastructure configuration:
--authentication policy via Azure Entra ID
--authorization policy by role and permission codes
--rate limiting policy
---60 requests/minute per user
--request size policy
---max 2 MiB
--data retention policy
---archive after 180 days
--retry and circuit breaker policies
--secure transport policy
---HTTPS only
--logging and monitoring policy
+- authentication policy via Azure Entra ID
+- authorization policy by role and permission codes
+- rate limiting policy
+- - 60 requests/minute per user
+- request size policy
+ - max 2 MiB
+- data retention policy
+  - archive after 180 days
+- retry and circuit breaker policies
+- secure transport policy
+ -HTTPS only
+- logging and monitoring policy
 
 <<<2. Resource Allocations>>>
-===Azure API Management (APIM)===
+**Azure API Management (APIM)**
 initial allocation:
--tier: Standard
--1 scale unit initially
--automatic scaling enabled for RPM growth
--request throttling policies enabled
+- tier: Standard
+- 1 scale unit initially
+- automatic scaling enabled for RPM growth
+- request throttling policies enabled
 
 Key parameters:
--CPU utilization threshold: 70%
--request queue threshold: 500
--timeout: 30 seconds
+- CPU utilization threshold: 70%
+- request queue threshold: 500
+- timeout: 30 seconds
 
-===Azure App Service===
+**Azure App Service**
 backend allocation:
--App Service Plan Standard S2
--2 vCPU
--3.5 GB RAM
--autoscaling based on CPU and queue length
+- App Service Plan Standard S2
+- 2 vCPU
+- 3.5 GB RAM
+- autoscaling based on CPU and queue length
 
 scaling rules:
--scale out when CPU > 70% for 5 minutes
--scale in when CPU < 30% for 10 minutes
--max instances: 5
--min instances: 1
+- scale out when CPU > 70% for 5 minutes
+- scale in when CPU < 30% for 10 minutes
+- max instances: 5
+- min instances: 1
 
-===Storage===
+**Storage**
 For document processing:
--Azure Blob Storage
--Hot tier for active files
--Cool/Archive tier after 180 days
+- Azure Blob Storage
+- Hot tier for active files
+- Cool/Archive tier after 180 days
 
 limits:
--container segmentation by tenant/process
--max file count per request
--versioning enabled
+- container segmentation by tenant/process
+- max file count per request
+- versioning enabled
 
-===Database===
+**Database**
 resource allocation:
--Azure SQL Database
--encrypted with AES-256
--automatic backup enabled
--geo-redundant backup recommended
+- Azure SQL Database
+- encrypted with AES-256
+- automatic backup enabled
+- geo-redundant backup recommended
 
 Store:
--metadata
--workflow states
--logs references
--confidence scores
--user activity records
+- metadata
+- workflow states
+- logs references
+- confidence scores
+- user activity records
 
-===Networking Parameters===
+**Networking Parameters**
 Define:
--HTTPS port
--API gateway endpoint
--VNet integration if required
--private endpoint for Key Vault and storage
--firewall IP restrictions
--CORS policy
+- HTTPS port
+- API gateway endpoint
+- VNet integration if required
+- private endpoint for Key Vault and storage
+- firewall IP restrictions
+- CORS policy
 
-<<<3. Core Business Logic Algorithms and Parameters>>>
-===Document Classification Algorithm===
+# <<<3. Core Business Logic Algorithms and Parameters>>>
+**Document Classification Algorithm**
 Purpose: Automatically identify file type and business relevance.
 Parameters:
--confidence threshold
--minimum text length
--OCR fallback enabled
+- confidence threshold
+- minimum text length
+- OCR fallback enabled
 
-===OCR Extraction Algorithm===
-+Azure AI Document Intelligence / OCR
+**OCR Extraction Algorithm**
+- Azure AI Document Intelligence / OCR
 Parameters:
--language model
--scanned image resolution threshold
--confidence threshold
+- language model
+- scanned image resolution threshold
+- confidence threshold
 
-===Semantic Mapping Algorithm===
+**Semantic Mapping Algorithm**
 Purpose: Map extracted fields into DUA schema.
--NLP entity extraction
--semantic matching
--customs terminology ontology
+- NLP entity extraction
+- semantic matching
+- customs terminology ontology
 Parameters:
--entity confidence threshold
--field synonym dictionary
--customs code dictionary
--fuzzy match tolerance
+- entity confidence threshold
+- field synonym dictionary
+- customs code dictionary
+- fuzzy match tolerance
 
-===Validation Rules Engine===
+**Validation Rules Engine**
 Rule-based validation engine for:
--required fields
--tax ID format
--invoice totals consistency
--quantity validation
--customs code validation
-<<<4. Agent Prototypes Definition>>>
-===File Ingestion Agent===
+- required fields
+- tax ID format
+- invoice totals consistency
+- quantity validation
+- customs code validation
+# <<<4. Agent Prototypes Definition>>>
+**File Ingestion Agent**
 Responsible for:
--receiving uploaded files
--validating formats
--storing files
--generating metadata
+- receiving uploaded files
+- validating formats
+- storing files
+- generating metadata
 
-===OCR Processing Agent===
+**OCR Processing Agent**
 Responsible for:
--scanned document detection
--image preprocessing
--OCR extraction
--confidence scoring
+- scanned document detection
+- image preprocessing
+- OCR extraction
+- confidence scoring
 
-===Semantic Interpretation Agent===
+**Semantic Interpretation Agent**
 Responsible for:
--customs terminology recognition
--field extraction
--entity normalization
--business semantic mapping
+- customs terminology recognition
+- field extraction
+- entity normalization
+- business semantic mapping
 
-===DUA Generation Agent===
+**DUA Generation Agent**
 Responsible for:
--template loading
--field replacement
--confidence indicators
--output document generation
+- template loading
+- field replacement
+- confidence indicators
+- output document generation
 
-===Validation Agent===
+**Validation Agent**
 Responsible for:
--consistency checks
--business rules
--anomaly detection
--manual review flags
+- consistency checks
+- business rules
+- anomaly detection
+- manual review flags
 
-===Notification Agent===
+**Notification Agent**
 Responsible for:
--process status updates
--async completion notifications
--failure alerts
+- process status updates
+- async completion notifications
+- failure alerts
 
-<<<5. Interfaces, Proxies, and Integration Points>>>
-==Frontend-Backend Interface==
+# <<<5. Interfaces, Proxies, and Integration Points>>>
+**Frontend-Backend Interface**
 Protocol:
--REST API
--HTTPS
--OpenAPI documented endpoints
+- REST API
+- HTTPS
+- OpenAPI documented endpoints
 
-===Backend-Azure Blob Storage===
+**Backend-Azure Blob Storage**
 Integration via:
---Azure SDK proxy layer
---storage service abstraction interface
+- Azure SDK proxy layer
+- storage service abstraction interface
 
-===Backend-AI/OCR Services===
-+Proxy interface
+**Backend-AI/OCR Services**
+-Proxy interface
 
-===Backend-Notification Hubs===
-+Proxy interface
+**Backend-Notification Hubs**
+-Proxy interface
 
-===Backend-Identity Provider===
+**Backend-Identity Provider**
 Integration point:
--Azure Entra ID
--OAuth2 / OpenID Connect
+- Azure Entra ID
+- OAuth2 / OpenID Connect
 
-===Backend-Monitoring Systems===
+**Backend-Monitoring Systems**
 Integration:
--Azure Monitor
--Application Insights
+- Azure Monitor
+- Application Insights
 
 Metrics:
--latency
--throughput
--failures
--retry count
--AI confidence averages
+- latency
+- throughput
+- failures
+- retry count
+- AI confidence averages
