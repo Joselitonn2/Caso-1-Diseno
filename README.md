@@ -11,7 +11,7 @@ The core approach relies on a multi-layered intelligent processing method. It pe
 
 The expected solution is the automatic mapping of extracted data into the official DUA template defined by the Ministry of Finance. The system validates basic consistency (such as totals, currencies, and dates), flags ambiguous fields, and generates a pre-filled Word document with visual confidence indicators (green, yellow, red). Rather than replacing customs experts, the system transforms their role into strategic validators, significantly reducing manual operational workload while maintaining regulatory accuracy.
 
-FRONTEND DESIGN
+# FRONTEND DESIGN
 ## 1.1 Technology stack
 
 Frontend technology, security technology, third-party libraries, frameworks, hosting; all with their respective versions
@@ -202,8 +202,7 @@ graph TB
 - [utils/](./src/utils/): Provides reusable helper functions shared across layers as described in [Layered designs](#15-layered-design)
 - [tests/](./src/tests/): Contains unit and integration tests aligned with tools defined in [Technology Stack](#11-Technology-stack)
 
-## BACKEND DESIGN
-
+# BACKEND DESIGN
 ## Technology stack
 - REST API, HTTPS
 - Azure API Management + Azure App Service
@@ -279,109 +278,108 @@ graph TB
 
 ## Backend key workflows
 **1. Upload Files to Generate DUA**
-1.The backend receives the request from the authenticated Customs Agent containing the list of files to be uploaded.
-2.The API validates:
- -User authentication through Azure Entra ID
- -User permission: LOAD_FILE_FOLDER
- -Request size limit (max 2 MiB per request)
- -Allowed file types (.pdf, .docx, .xlsx, .jpg, .png, .tiff, .txt)
-3.The backend opens a streaming upload session to process files one by one without loading all content into memory.
-4.Each file is transferred in raw binary stream format through HTTPS.
-5.The backend performs basic file validation:
- -file integrity
- -malware scan hook
- -duplicate detection
- -unsupported format validation
-6.Each valid file is stored in Azure Blob Storage inside a container associated with the current DUA generation request.
-7.Metadata is stored in the database:
- -file name
- -file type
- -upload timestamp
- -storage URI
- -uploaded by user
- -process status
- -correlation ID
-8.An event log is registered in Application Insights:
- -upload started
- -upload completed
- -upload failed
-9.The backend returns a Folder Upload Session ID that will be used in the DUA generation workflow.
+1. The backend receives the request from the authenticated Customs Agent containing the list of files to be uploaded.
+2. The API validates:
+ - User authentication through Azure Entra ID
+ - User permission: LOAD_FILE_FOLDER
+ - Request size limit (max 2 MiB per request)
+ - Allowed file types (.pdf, .docx, .xlsx, .jpg, .png, .tiff, .txt)
+3. The backend opens a streaming upload session to process files one by one without loading all content into memory.
+4. Each file is transferred in raw binary stream format through HTTPS.
+5. The backend performs basic file validation:
+ - file integrity
+ - malware scan hook
+ - duplicate detection
+ - unsupported format validation
+6. Each valid file is stored in Azure Blob Storage inside a container associated with the current DUA generation request.
+7. Metadata is stored in the database:
+ - file name
+ - file type
+ - upload timestamp
+ - storage URI
+ - uploaded by user
+ - process status
+ - correlation ID
+8. An event log is registered in Application Insights:
+ - upload started
+ - upload completed
+ - upload failed
+9. The backend returns a Folder Upload Session ID that will be used in the DUA generation workflow.
 
 **2. Setup DUA Template**
-1.The backend receives the DUA template file upload request.
-2.The API validates:
- -authenticated user
- -permission: LOAD_TEMPLATE
- -valid Word template format (.docx)
-3.The template file is uploaded using streaming transfer.
-4.The file is stored in Azure Blob Storage under a dedicated template container.
-5.The backend extracts the Word placeholders / merge fields from the template.
+1. The backend receives the DUA template file upload request.
+2. The API validates:
+ - authenticated user
+ - permission: LOAD_TEMPLATE
+ - valid Word template format (.docx)
+3. The template file is uploaded using streaming transfer.
+4. The file is stored in Azure Blob Storage under a dedicated template container.
+5. The backend extracts the Word placeholders / merge fields from the template.
 6. The API returns Template Session ID
 
 **3. Generate DUA Document**
-1.The backend receives the generation request with:
- -Folder Upload Session ID
- -Template Session ID
-2.The API validates:
- -authenticated user
- -permission: GENERATE_DUA
-3.A DUA Generation Job is created in the database with status PENDING.
-4.The backend sends an asynchronous processing event to the AI processing service.
-5.The AI pipeline starts processing:
- -reads all uploaded files from Blob Storage
- -extracts structured text from Excel / Word
- -extracts text from PDFs
- -applies OCR for scanned images and invoices
- -normalizes extracted content
-6.The AI semantic engine interprets customs-related fields
-7.Extracted data is mapped into the official DUA field model.
-8.Validation rules are executed:
- -required fields
- -data format validation
- -cross-field consistency
- -duplicate invoice detection
- -missing values
- -confidence threshold rules
-9.Low-confidence fields are marked with review flags.
+1. The backend receives the generation request with:
+ - Folder Upload Session ID
+ - Template Session ID
+2. The API validates:
+ - authenticated user
+ - permission: GENERATE_DUA
+3. A DUA Generation Job is created in the database with status PENDING.
+4. The backend sends an asynchronous processing event to the AI processing service.
+5. The AI pipeline starts processing:
+ - reads all uploaded files from Blob Storage
+ - extracts structured text from Excel / Word
+ - extracts text from PDFs
+ - applies OCR for scanned images and invoices
+ - normalizes extracted content
+6. The AI semantic engine interprets customs-related fields
+7. Extracted data is mapped into the official DUA field model.
+8. Validation rules are executed:
+ - required fields
+ - data format validation
+ - cross-field consistency
+ - duplicate invoice detection
+ - missing values
+ - confidence threshold rules
+9. Low-confidence fields are marked with review flags.
 10. The Word DUA document is automatically pre-filled using the template.
-11.The generated document is stored in Blob Storage.
-12.The job status is updated to:
- -COMPLETED
- -FAILED
- -REVIEW_REQUIRED
-13.A notification is sent through Azure Notification Hubs.
-14.The event is logged in observability tools.
+11. The generated document is stored in Blob Storage.
+12. The job status is updated to:
+ - COMPLETED
+ - FAILED
+ - REVIEW_REQUIRED
+13. A notification is sent through Azure Notification Hubs.
+14. The event is logged in observability tools.
 
 **4. Preview Generated DUA**
-1.The backend receives the preview request.
-2.The API validates:
- -authenticated user
- -permission: PREVIEW_DUA
-3.The backend retrieves the generated DUA file from Blob Storage.
-4.The Word file is converted into preview format:
- -PDF
- -HTML rendering
- -document snapshot
-5.Confidence indicators are injected visually:
- -green = high confidence
- -yellow = medium confidence
- -red = requires manual review
-6.The preview file is returned to the frontend.
-7.Preview access is logged.
+1. The backend receives the preview request.
+2. The API validates:
+ - authenticated user
+ - permission: PREVIEW_DUA
+3. The backend retrieves the generated DUA file from Blob Storage.
+4. The Word file is converted into preview format:
+ - PDF
+ - HTML rendering
+ - document snapshot
+5. Confidence indicators are injected visually:
+ - green = high confidence
+ - yellow = medium confidence
+ - red = requires manual review
+6. The preview file is returned to the frontend.
+7. Preview access is logged.
 
 **5. Download Final DUA**
-1.The backend receives the download request.
-2.The API validates:
- -authenticated user
- -permission: DOWNLOAD_DUA
-3.The backend retrieves the final approved document from Blob Storage.
-4. A secure temporary download URL is generated.
-5.The file is returned as a downloadable HTTPS response.
-6.Download event is logged.
-
+1. The backend receives the download request.
+2. The API validates:
+ - authenticated user
+ - permission: DOWNLOAD_DUA
+3. The backend retrieves the final approved document from Blob Storage.
+4.  A secure temporary download URL is generated.
+5. The file is returned as a downloadable HTTPS response.
+6. Download event is logged.
 
 ## Design Considerations
-# <<<1. System Configurations, Parameters, and Policies>>>
+### <<<1. System Configurations, Parameters, and Policies>>>
 **Configuration Management**
 Configuration values must be managed using:
 - environment-specific configuration files
@@ -409,7 +407,7 @@ Operational policies must be explicitly defined in code and infrastructure confi
  -HTTPS only
 - logging and monitoring policy
 
-<<<2. Resource Allocations>>>
+### <<<2. Resource Allocations>>>
 **Azure API Management (APIM)**
 initial allocation:
 - tier: Standard
@@ -469,7 +467,7 @@ Define:
 - firewall IP restrictions
 - CORS policy
 
-# <<<3. Core Business Logic Algorithms and Parameters>>>
+### <<<3. Core Business Logic Algorithms and Parameters>>>
 **Document Classification Algorithm**
 Purpose: Automatically identify file type and business relevance.
 Parameters:
@@ -502,7 +500,7 @@ Rule-based validation engine for:
 - invoice totals consistency
 - quantity validation
 - customs code validation
-# <<<4. Agent Prototypes Definition>>>
+### <<<4. Agent Prototypes Definition>>>
 **File Ingestion Agent**
 Responsible for:
 - receiving uploaded files
@@ -544,7 +542,7 @@ Responsible for:
 - async completion notifications
 - failure alerts
 
-# <<<5. Interfaces, Proxies, and Integration Points>>>
+### <<<5. Interfaces, Proxies, and Integration Points>>>
 **Frontend-Backend Interface**
 Protocol:
 - REST API
