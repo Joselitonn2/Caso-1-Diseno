@@ -1,0 +1,26 @@
+// TODO: Add .gitignore rules for backend
+// Binaries
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+// IDE
+.vs/
+.vscode/
+*.user
+*.sln.iml
+
+// Dependencies
+packages/
+!packages/repositories.config
+
+// Environment files
+.env
+.env.local
+appsettings.local.json
+
+// Build outputs
+dist/
+build/
