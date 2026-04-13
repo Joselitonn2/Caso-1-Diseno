@@ -203,6 +203,10 @@ graph TB
 - [tests/](./src/tests/): Contains unit and integration tests aligned with tools defined in [Technology Stack](#11-Technology-stack)
 
 # BACKEND DESIGN
+
+## Overview
+DUA (Declaración Única Aduanal) Streamliner Backend API built with ASP.NET Core, designed to process and validate customs declaration documents.
+
 ## Technology stack
 - REST API, HTTPS
 - Azure API Management + Azure App Service
@@ -211,8 +215,8 @@ graph TB
 - No load balance required
 - API coding language .NET, ASP.NET Core
 - This is a monorepo solution, sharing the repository with the frontend, backend folder: duabusiness
-- services
 - Azure SQL Database
+
 
 ## Security
 (Same as frontend:)
@@ -697,3 +701,107 @@ Metrics:
 - failures
 - retry count
 - AI confidence averages
+
+## Project Structure
+
+### [Controllers/](Backend/duabusiness/Controllers/)
+REST API endpoints for:
+- [FileUploadController](Backend/duabusiness/Controllers/FileUploadController.cs): File ingestion and management
+- [TemplateController](Backend/duabusiness/Controllers/TemplateController.cs): DUA template management
+- [DuaGenerationController](Backend/duabusiness/Controllers/DuaGenerationController.cs): Document generation orchestration
+- [DuaDocumentController](Backend/duabusiness/Controllers/DuaDocumentController.cs): Preview and download operations
+- [UserManagementController](Backend/duabusiness/Controllers/UserManagementController.cs): User CRUD operations (Manager only)
+- [ReportController](Backend/duabusiness/Controllers/ReportController.cs): Analytics and reporting (Manager only)
+- [AuthenticationController](Backend/duabusiness/Controllers/AuthenticationController.cs): Session and token management
+
+### [Services/](Backend/duabusiness/Services/)
+Business logic layer:
+- [FileUploadService](Backend/duabusiness/Services/FileUploadService.cs): File handling and validation
+- [TemplateService](Backend/duabusiness/Services/TemplateService.cs): Template processing
+- [DuaGenerationService](Backend/duabusiness/Services/DuaGenerationService.cs): Generation orchestration
+- [DuaDocumentService](Backend/duabusiness/Services/DuaDocumentService.cs): Document rendering
+- [ValidationService](Backend/duabusiness/Services/ValidationService.cs): Data validation
+- [NotificationService](Backend/duabusiness/Services/NotificationService.cs): Event notifications
+- [AuditService](Backend/duabusiness/Services/AuditService.cs): Audit logging
+- [UserManagementService](Backend/duabusiness/Services/UserManagementService.cs): User operations
+- [ReportService](Backend/duabusiness/Services/ReportService.cs): Analytics
+- [AuthenticationService](Backend/duabusiness/Services/AuthenticationService.cs): Auth handling
+
+### [Models/](Backend/duabusiness/Models/)
+Data entities:
+- [User](Backend/duabusiness/Models/User.cs), [FileMetadata](Backend/duabusiness/Models/FileMetadata.cs), [FileUploadSession](Backend/duabusiness/Models/FileUploadSession.cs), [TemplateSession](Backend/duabusiness/Models/TemplateSession.cs)
+- [DuaGenerationJob](Backend/duabusiness/Models/DuaGenerationJob.cs), [DuaData](Backend/duabusiness/Models/DuaData.cs), [AuditLog](Backend/duabusiness/Models/AuditLog.cs)
+- [ValidationRule](Backend/duabusiness/Models/ValidationRule.cs), [OCRExtractionResult](Backend/duabusiness/Models/OCRExtractionResult.cs), [SemanticMappingResult](Backend/duabusiness/Models/SemanticMappingResult.cs)
+- [NotificationMessage](Backend/duabusiness/Models/NotificationMessage.cs)
+
+### [Repositories/](Backend/duabusiness/Repositories/)
+Data access layer with Entity Framework Core:
+- [IRepository](Backend/duabusiness/Repositories/IRepository.cs): Generic Repository pattern
+- [FileUploadSessionRepository](Backend/duabusiness/Repositories/FileUploadSessionRepository.cs), [FileMetadataRepository](Backend/duabusiness/Repositories/FileMetadataRepository.cs)
+- [TemplateSessionRepository](Backend/duabusiness/Repositories/TemplateSessionRepository.cs), [DuaGenerationJobRepository](Backend/duabusiness/Repositories/DuaGenerationJobRepository.cs)
+- [DuaDataRepository](Backend/duabusiness/Repositories/DuaDataRepository.cs), [UserRepository](Backend/duabusiness/Repositories/UserRepository.cs)
+- [AuditLogRepository](Backend/duabusiness/Repositories/AuditLogRepository.cs), [ValidationRuleRepository](Backend/duabusiness/Repositories/ValidationRuleRepository.cs)
+- [OCRExtractionResultRepository](Backend/duabusiness/Repositories/OCRExtractionResultRepository.cs), [SemanticMappingResultRepository](Backend/duabusiness/Repositories/SemanticMappingResultRepository.cs)
+- [NotificationMessageRepository](Backend/duabusiness/Repositories/NotificationMessageRepository.cs)
+
+### [ApiClients/](Backend/duabusiness/ApiClients/)
+External service integrations:
+- [AzureBlobStorageClient](Backend/duabusiness/ApiClients/AzureBlobStorageClient.cs): File storage
+- [AzureOcrClient](Backend/duabusiness/ApiClients/AzureOcrClient.cs): OCR processing
+- [AzureNotificationHubsClient](Backend/duabusiness/ApiClients/AzureNotificationHubsClient.cs): Push notifications
+- [AzureKeyVaultClient](Backend/duabusiness/ApiClients/AzureKeyVaultClient.cs): Secrets management
+- [AzureApplicationInsightsClient](Backend/duabusiness/ApiClients/AzureApplicationInsightsClient.cs): Telemetry
+- [DocumentProcessingClient](Backend/duabusiness/ApiClients/DocumentProcessingClient.cs): Document parsing
+- [MalwareScanClient](Backend/duabusiness/ApiClients/MalwareScanClient.cs): Security scanning
+
+### [Agents/](Backend/duabusiness/Agents/)
+Processing orchestration (Agent pattern):
+- [FileIngestionAgent](Backend/duabusiness/Agents/FileIngestionAgent.cs): File validation and ingestion
+- [OCRProcessingAgent](Backend/duabusiness/Agents/OCRProcessingAgent.cs): Scanned document processing
+- [SemanticInterpretationAgent](Backend/duabusiness/Agents/SemanticInterpretationAgent.cs): Field mapping
+- [DuaGenerationAgent](Backend/duabusiness/Agents/DuaGenerationAgent.cs): Document generation
+- [ValidationAgent](Backend/duabusiness/Agents/ValidationAgent.cs): Data validation
+- [NotificationAgent](Backend/duabusiness/Agents/NotificationAgent.cs): Event notifications
+
+### [Middleware/](Backend/duabusiness/Middleware/)
+Cross-cutting concerns:
+- [AuthenticationMiddleware](Backend/duabusiness/Middleware/AuthenticationMiddleware.cs): Token validation
+- [AuthorizationMiddleware](Backend/duabusiness/Middleware/AuthorizationMiddleware.cs): Permission checking
+- [RateLimitingMiddleware](Backend/duabusiness/Middleware/RateLimitingMiddleware.cs): Request throttling (60 req/min)
+- [RequestSizeLimitMiddleware](Backend/duabusiness/Middleware/RequestSizeLimitMiddleware.cs): Payload limit (2 MiB)
+- [ExceptionHandlingMiddleware](Backend/duabusiness/Middleware/ExceptionHandlingMiddleware.cs): Error handling
+- [LoggingMiddleware](Backend/duabusiness/Middleware/LoggingMiddleware.cs): Request/response logging
+- [HttpsEnforcementMiddleware](Backend/duabusiness/Middleware/HttpsEnforcementMiddleware.cs): HTTPS only
+- [CorsMiddleware](Backend/duabusiness/Middleware/CorsMiddleware.cs): CORS policy
+
+### [Validators/](Backend/duabusiness/Validators/)
+Input validation:
+- [FileValidator](Backend/duabusiness/Validators/FileValidator.cs): File type and size validation
+- [TemplateValidator](Backend/duabusiness/Validators/TemplateValidator.cs): Template format validation
+- [DuaDataValidator](Backend/duabusiness/Validators/DuaDataValidator.cs): DUA data consistency
+- [UserInputValidator](Backend/duabusiness/Validators/UserInputValidator.cs): User input validation
+
+### [Configuration/](Backend/duabusiness/Configuration/)
+System configuration and policies:
+- [SystemPolicies](Backend/duabusiness/Configuration/SystemPolicies.cs): Constants and limits
+- [RolePermissionMap](Backend/duabusiness/Configuration/RolePermissionMap.cs): Permission matrix
+- [AzureResourceConfig](Backend/duabusiness/Configuration/AzureResourceConfig.cs): Azure resource settings
+- [AlgorithmConfig](Backend/duabusiness/Configuration/AlgorithmConfig.cs): AI/ML parameters
+- [ApplicationSettings](Backend/duabusiness/Configuration/ApplicationSettings.cs): Environment config
+- [ServiceRegistration](Backend/duabusiness/Configuration/ServiceRegistration.cs): Dependency injection
+- [DatabaseConfig](Backend/duabusiness/Configuration/DatabaseConfig.cs): Database configuration
+
+### [Exceptions/](Backend/duabusiness/Exceptions/)
+Custom exception hierarchy:
+- [DuaBusinessException](Backend/duabusiness/Exceptions/DuaBusinessException.cs): Base exception and specialized exceptions
+  - AuthenticationException, AuthorizationException
+  - FileUploadException, ValidationException
+  - ProcessingException, ResourceNotFoundException
+
+### [Logs/](Backend/duabusiness/Logs/)
+Logging service:
+- [LoggingService](Backend/duabusiness/Logs/LoggingService.cs): Application Insights integration
+
+### [Utils/](Backend/duabusiness/Utils/)
+Utility functions and extensions:
+- [UtilityHelpers](Backend/duabusiness/Utils/UtilityHelpers.cs): String, Collection, DateTime extensions, Crypto and File utilities
